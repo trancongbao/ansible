@@ -1,0 +1,24 @@
+- name: Install ufw (if not already installed)
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+
+- name: Allow ssh port 22
+  community.general.system.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow samba ports 137-139/udp (NetBIOS) and 139/tcp and 445/tcp
+  community.general.system.ufw:
+    rule: allow
+    name: samba
+
+- name: Allow sftp port 2022
+  community.general.system.ufw:
+    rule: allow
+    port: 2022
+    proto: tcp
+
+- name: Enable ufw
+  community.general.system.ufw:
+    state: enabled

@@ -1,0 +1,18 @@
+---
+- name: Setup samba server
+  hosts: all
+  become: true
+  tasks:
+    - name: Setup samba server
+      ansible.builtin.include_tasks: "{{ item }}"
+      with_items:
+        - tasks/add_users_groups.yml
+        - tasks/add_directories.yml
+        - tasks/configure_samba.yml
+
+    - name: Setup sftp
+      ansible.builtin.include_tasks: tasks/configure_sftp.yml
+      when: inventory_hostname in ['stbkap-samba-noris', 'stbkap-samba-noris2']
+
+    - name: Setup firewall
+      ansible.builtin.include_tasks: tasks/configure_firewall.yml

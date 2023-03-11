@@ -1,0 +1,49 @@
+- name: Check if sftp_config exists
+  ansible.builtin.stat:
+    path: /etc/ssh/sftp_config
+  register: sftp_config_stat
+
+- name: Create backup of sftp_config
+  ansible.builtin.command: cp /etc/ssh/sftp_config /etc/ssh/sftp_config.{{ '%Y-%m-%dT%H:%M:%S' | strftime(sftp_config_stat.stat.mtime) }}
+  when: sftp_config_stat.stat.exists
+
+- name: Copy sftp_config file to remote host
+  ansible.builtin.copy:
+    src: ./tasks/sftp_config
+    dest: /etc/ssh/sftp_config
+    mode: '0644'
+
+- name: Check if sftp.service exists
+  ansible.builtin.stat:
+    path: /etc/systemd/system/sftp.service
+  register: sftp_service_stat
+
+- name: Create backup of sftp.service
+  ansible.builtin.command: cp /etc/systemd/system/sftp.service /etc/systemd/system/sftp.service.{{ '%Y-%m-%dT%H:%M:%S' | strftime(sftp_service_stat.stat.mtime) }}
+  when: sftp_service_stat.stat.exists
+
+- name: Copy sftp.service file to remote host
+  ansible.builtin.copy:
+    src: ./tasks/sftp.service
+    dest: /etc/systemd/system/sftp.service
+    mode: '0644'
+
+- name: Check if sftp_env exists
+  ansible.builtin.stat:
+    path: /etc/default/sftp
+  register: sftp_env_stat
+
+- name: Create backup of sftp_env
+  ansible.builtin.command: cp /etc/default/sftp /etc/default/sftp.{{ '%Y-%m-%dT%H:%M:%S' | strftime(sftp_env_stat.stat.mtime) }}
+  when: sftp_env_stat.stat.exists
+
+- name: Copy sftp_env file to remote host
+  ansible.builtin.copy:
+    src: ./tasks/sftp_env
+    dest: /etc/default/sftp
+    mode: '0644'
+
+- name: Start/restart sftp service
+  ansible.builtin.service:
+    name: sftp
+    state: restarted

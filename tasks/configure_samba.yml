@@ -1,0 +1,43 @@
+- name: Install samba server (if not already installed)
+  ansible.builtin.apt:
+    name: samba
+    state: present
+
+- name: Generate samba share configuration file
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+  vars:
+    _base_dir: "{{ base_dir }}"
+    _envs: "{{ envs }}"
+    _stbks: "{{ stbks }}"
+
+- name: Install pexpect (if not already installed)
+  ansible.builtin.apt:
+    name: python3-pexpect
+    state: present
+
+- name: Add samba dms_exporter user
+  ansible.builtin.expect:
+    command: smbpasswd -a dms_exporter
+    timeout: 3
+    responses:
+      'New SMB password': "{{ dms_exporter_password }}"
+      'Retype new SMB password': "{{ dms_exporter_password }}"
+
+- name: Add samba stbk users
+  ansible.builtin.expect:
+    command: smbpasswd -a {{ item.code }}_user
+    timeout: 3
+    responses:
+      'New SMB password': "{{ item.password }}"
+      'Retype new SMB password': "{{ item.password }}"
+  with_items: "{{ stbks }}"
+
+- name: Restart samba service
+  ansible.builtin.service:
+    name: smbd
+    state: restarted

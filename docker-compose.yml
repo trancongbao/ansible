@@ -1,0 +1,35 @@
+version: '3'
+services:
+  ansible_control_node:
+    container_name: ansible_control_node
+    build: ./control_node
+    tty: true
+    working_dir: "/var/data"
+    volumes:
+      - .:/var/data
+    networks:
+      my_network:
+        ipv4_address: 172.18.0.10
+
+  ansible_target_node1:
+    container_name: ansible_target_node1
+    build: ./target_node
+    tty: true
+    networks:
+      my_network:
+        ipv4_address: 172.18.0.11
+
+  ansible_target_node2:
+    container_name: ansible_target_node2
+    build: ./target_node
+    tty: true
+    networks:
+      my_network:
+        ipv4_address: 172.18.0.12
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

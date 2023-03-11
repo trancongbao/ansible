@@ -1,0 +1,29 @@
+[global]
+# enforce SMB3 #
+server min protocol = SMB3_11
+# smb v4.14 and later
+server signing = mandatory
+server smb encrypt = required
+# smb v4.13 or earlier
+smb encrypt = required
+
+
+{% for env in _envs %}
+## env: {{ env }} ##
+[{{ env }}]
+path = {{ _base_dir }}/{{ env }}
+valid users = dms_exporter
+read only = no
+writeable = yes
+browseable = yes
+
+{% for stbk in _stbks %}
+[{{ env }}_{{ stbk.code }}]
+path = {{ _base_dir }}/{{ env }}/{{ stbk.code }}
+valid users = {{ stbk.code }}_user
+read only = no
+writeable = yes
+browseable = yes
+
+{% endfor %}
+{% endfor %}

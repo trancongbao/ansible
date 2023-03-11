@@ -1,0 +1,39 @@
+- name: Create base_dir directory
+  ansible.builtin.file:
+    path: "{{ base_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create env directories
+  ansible.builtin.file:
+    path: "{{ base_dir }}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  with_items: "{{ envs }}"
+
+- name: Create stbk directories
+  ansible.builtin.file:
+    path: "{{ base_dir }}/{{ item.0 }}/{{ item.1.code }}"
+    state: directory
+    owner: "{{ item.1.code }}_user"
+    group: dms_export_group
+    mode: '0770'
+  with_nested:
+    - "{{ envs }}"
+    - "{{ stbks }}"
+
+- name: Create form directories
+  ansible.builtin.file:
+    path: "{{ base_dir }}/{{ item.0 }}/{{ item.1.code }}/{{ item.2 }}"
+    state: directory
+    owner: "{{ item.1.code }}_user"
+    group: dms_export_group
+    mode: '0770'
+  with_nested:
+    - "{{ envs }}"
+    - "{{ stbks }}"
+    - "{{ forms }}"

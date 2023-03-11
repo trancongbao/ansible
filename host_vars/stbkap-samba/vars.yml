@@ -1,0 +1,32 @@
+base_dir: /dms_export
+# envs: ["dev", "dev2", "dev3", "int"]
+envs: ["dev","dev2"]
+
+# forms:
+#   - 1_1VerbindlicheAuskunft
+#   - 1_2ZulassungStBP
+#   - 1_3BefreiungStBP
+#   - 1_4AnerkennungStB
+#   - 2_1BestellungStB
+#   - 2_2AenderungRegister
+#   - 2_3BefugnisHilfeleistungen
+#   - 3_1VerzichtBestellung
+#   - 3_2WeiterfuehrungBerufsbezeichnung
+#   - 4_4BestellungVertreter59
+#   - 4_4BestellungVertreter69
+#   - 5_1AnerkennungBAG
+#   - 5_2ErfassungsbogenBAG
+#   - 6_1VerzichtserklaerungStBG
+#   - 7_1AusnahmeBeratungsstelle
+#   - 8_2ZulassungStFW
+#   - 8_3ZulassungFALG
+#   - 8_4ZulassungFARC
+#   - 8_5ZulassungFALF
+#   - 8_6ZulassungFAIT
+#   - 9_1Gleichwertigkeitsfeststellung
+#   - 10_1BestellungPraxistreuhaender
+#   - 11_1VerbotGewerblicheTaetigkeit
+#   - 12_1LandwirtschaftlicheBuchstelle
+forms:
+  - 1_1VerbindlicheAuskunft
+  - 1_2ZulassungStBP

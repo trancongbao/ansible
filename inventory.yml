@@ -1,0 +1,13 @@
+---
+all:
+  hosts:
+    # stbkap-samba:
+    #   ansible_host: 172.18.0.11
+    #   ansible_user: root
+    #   ansible_ssh_pass: password
+    #   ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    stbkap-samba-noris:
+      ansible_host: 172.18.0.12
+      ansible_user: root
+      ansible_ssh_pass: password
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

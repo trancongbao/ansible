@@ -1,0 +1,31 @@
+- name: Add group dms_export_group
+  ansible.builtin.group:
+    name: dms_export_group
+    state: present
+
+- name: Add dms_exporter system user
+  ansible.builtin.user:
+    name: dms_exporter
+    password: "{{ dms_exporter_password }}"
+    state: present
+    system: true
+    create_home: false
+    shell: /usr/sbin/nologin
+    groups: dms_export_group
+
+- name: Create stbk users
+  ansible.builtin.user:
+    name: "{{ item.code }}_user"
+    password: "{{ item.password | password_hash('sha512') }}"
+    shell: /bin/false
+    system: true
+    create_home: false
+  with_items: "{{ stbks }}"
+
+- name: remove user from group
+  command:
+    cmd: "/usr/sbin/deluser {{ item.code }}_user dms_export_group"
+  register: grp_change
+  failed_when: grp_change.rc not in [0, 6]
+  changed_when: grp_change.rc == 0
+  with_items: "{{ stbks }}"

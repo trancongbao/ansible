@@ -1,0 +1,27 @@
+Port 2022
+Protocol 2
+SyslogFacility AUTHPRIV
+LogLevel INFO
+LoginGraceTime 60
+PermitRootLogin no
+PubkeyAuthentication no
+IgnoreRhosts yes
+#AuthorizedKeysFile .ssh/authorized_keys
+
+#disabled by tpi
+#X11Forwarding yes
+
+KeepAlive yes
+ChallengeResponseAuthentication no
+AllowUsers gwischrop bctran tkalkus ber_user bb_user hb_user dus_user hh_user he_user cgn_user mv_user muc_user ni_user nb_user nue_user rp_user sl_user sn_user st_user sh_user str_user th_user wl_user pruefnrw_user pruefbw_user
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+ChrootDirectory /dms_export
+X11Forwarding no
+AllowTcpForwarding no
+ForceCommand internal-sftp
+PasswordAuthentication yes
+
+UsePAM yes
+UseDNS no
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr
